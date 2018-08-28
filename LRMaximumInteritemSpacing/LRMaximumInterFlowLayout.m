@@ -101,21 +101,25 @@
     }
 }
 
-
+// MARK:- 当前屏幕可见的cell、header、footer的布局
 - (NSArray<UICollectionViewLayoutAttributes *> *)layoutAttributesForElementsInRect:(CGRect)rect{
     NSMutableArray *attributes = [NSMutableArray array];
 
+    //  添加当前屏幕可见的cell的布局
     [self.cellAttributes enumerateKeysAndObjectsUsingBlock:^(NSIndexPath *key, UICollectionViewLayoutAttributes *obj, BOOL * _Nonnull stop) {
         if (CGRectContainsRect(rect, obj.frame)) {
             [attributes addObject:obj];
         }
     }];
     
+    //  添加当前屏幕可见的头视图的布局
     [self.headAttributes enumerateKeysAndObjectsUsingBlock:^(NSIndexPath *key, UICollectionViewLayoutAttributes *obj, BOOL * _Nonnull stop) {
         if (CGRectContainsRect(rect, obj.frame)) {
             [attributes addObject:obj];
         }
     }];
+    
+    //  添加当前屏幕可见的尾部的布局
     [self.footerAttributes enumerateKeysAndObjectsUsingBlock:^(NSIndexPath *key, UICollectionViewLayoutAttributes *obj, BOOL * _Nonnull stop) {
         if (CGRectContainsRect(rect, obj.frame)) {
             [attributes addObject:obj];
@@ -124,11 +128,12 @@
     return attributes;
 }
 
-
+// MARK:- 该方法是为每个Cell返回一个对应的Attributes，我们需要在该Attributes中设置对应的属性，如Frame等
 - (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath{
     return self.cellAttributes[indexPath];
 }
 
+// MARK:- 该方法是为每个头和尾返回一个对应的Attributes，我们需要在该Attributes中设置对应的属性，如Frame等
 - (UICollectionViewLayoutAttributes *)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath{
     if ([elementKind isEqualToString:UICollectionElementKindSectionHeader]) {
         return self.headAttributes[indexPath];
@@ -137,6 +142,7 @@
     }
 }
 
+// MARK:- 设置滚动范围
 - (CGSize)collectionViewContentSize{
     return CGSizeMake(self.collectionView.frame.size.width, self.currentY);
 }
